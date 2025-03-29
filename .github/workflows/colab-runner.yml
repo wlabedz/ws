@@ -30,7 +30,7 @@ jobs:
 
       - name: Set up Git user
         run: |
-          git config --global user.email "wojciech.labedz2@gmail.com"
+          git config --global user.email "wlabedz@student.agh.edu.pl"
           git config --global user.name "Wojtek Łabędź"
 
       - name: Install Jupyter Kernel
