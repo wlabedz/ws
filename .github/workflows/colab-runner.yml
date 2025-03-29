@@ -2,7 +2,13 @@ name: Run Colab Notebook
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/5 * * * *'  # Harmonogram, na przykład co 5 minut
+  workflow_dispatch:  # Dodanie opcji uruchamiania ręcznego
+    inputs:
+      exampleInput:
+        description: 'Optional input parameter'
+        required: false
+        default: 'default value'
 
 jobs:
   run_colab_notebook:
@@ -22,12 +28,25 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Jupyter Notebook
+      - name: Set up Git user
+        run: |
+          git config --global user.email "wlabedz@student.agh.edu.pl"
+          git config --global user.name "Wojtek Łabędź"
+
+      - name: Install Jupyter Kernel
+        run: |
+          python -m pip install ipykernel
+          python -m ipykernel install --user --name=python3
+
+      - name: Run Jupyter Notebook with Papermill
         run: |
           papermill nb.ipynb nbo.ipynb
-
+          
       - name: Commit results (optional)
         run: |
           git add nbo.ipynb
+          git add scraped_data.csv
           git commit -m "Update notebook results"
-          git push
+          git push https://github.com/${{ github.repository }}.git HEAD:${{ github.ref }} 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,2 +1,5 @@
 papermill
 jupyter
+pandas
+numpy
+bs4
