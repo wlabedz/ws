@@ -47,4 +47,6 @@ jobs:
           git add nbo.ipynb
           git add scraped_data.csv
           git commit -m "Update notebook results"
-          git push
+          git push https://github.com/${{ github.repository }}.git HEAD:${{ github.ref }} 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
